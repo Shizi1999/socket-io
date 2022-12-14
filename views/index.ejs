@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+  </head>
+  <body>
+    <div>Hello</div>
+    <input type="text" id="input" />
+    <button id="btn">Send</button>
+    <ul id="list"></ul>
+    <script>
+      const socket = io("http://localhost:3000");
+      const list = document.getElementById("list");
+      const btn = document.getElementById("btn");
+      const input = document.getElementById("input");
+
+      socket.on("connection", () => {
+        const li = document.createElement("li");
+        li.innerHTML = "Connected";
+        list.append(li);
+      });
+
+      socket.on("Sever-send-message", (data) => {
+        const li = document.createElement("li");
+        li.innerHTML = data;
+        list.append(li);
+      });
+
+      btn.onclick = () => {
+        const message = input.value;
+        socket.emit("Client-send-message", message);
+      };
+    </script>
+  </body>
+</html>
